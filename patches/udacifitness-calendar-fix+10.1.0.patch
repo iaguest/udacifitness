@@ -1,0 +1,13 @@
+diff --git a/node_modules/udacifitness-calendar-fix/src/agenda/index.js b/node_modules/udacifitness-calendar-fix/src/agenda/index.js
+index 7d3c5ca..597a172 100644
+--- a/node_modules/udacifitness-calendar-fix/src/agenda/index.js
++++ b/node_modules/udacifitness-calendar-fix/src/agenda/index.js
+@@ -127,7 +127,7 @@ export default class AgendaView extends Component {
+   }
+ 
+   setScrollPadPosition(y, animated) {
+-    this.scrollPad._component.scrollTo({x: 0, y, animated});
++    this.scrollPad.scrollTo({x: 0, y, animated});
+   }
+ 
+   onScrollPadLayout() {
