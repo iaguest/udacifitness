@@ -1,26 +1,20 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, StatusBar } from 'react-native';
 import AddEntry from './components/AddEntry';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux';
 import reducer from './reducers'
-import { purple, white } from './utils/colors'
+import { purple, white, gray } from './utils/colors'
 import History from './components/History';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants'
 
-function HomeScreen() {
+function UdaciStatusBar({backgroundColor, ...props}) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+    <View style={{backgroundColor, height: Constants.statusBarHeight}}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
     </View>
   );
 }
@@ -31,10 +25,38 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
+        <UdaciStatusBar backgroundColor={purple} barStyle='light-content'/>
         <NavigationContainer>
-          <Tab.Navigator>
-            <Tab.Screen name="History" component={History} />
-            <Tab.Screen name="Add Entry" component={AddEntry} />
+          <Tab.Navigator
+            tabBarOptions={{
+              activeTintColor: purple,
+              inactiveTintColor: gray,
+              labelStyle: {
+                fontSize:20,
+              },
+              style: {
+                height: 90,
+              }
+            }}
+          >
+            <Tab.Screen
+              name="History"
+              component={History}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name='ios-bookmarks' color={color} size={size} />
+                ),                
+              }}
+              />
+            <Tab.Screen
+              name="Add Entry"
+              component={AddEntry}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome name='plus-square' color={color} size={size} />
+                ),                
+              }}
+              />
           </Tab.Navigator>
         </NavigationContainer>
       </Provider>
