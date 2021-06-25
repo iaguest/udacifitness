@@ -10,6 +10,7 @@ import { submitEntry, removeEntry } from '../utils/api'
 import { connect } from 'react-redux'
 import { addEntry } from '../actions'
 import { purple, white } from '../utils/colors'
+import { CommonActions } from '@react-navigation/native'
 
 function SubmitBtn({ onPress }) {
   return (
@@ -71,6 +72,7 @@ class AddEntry extends Component {
     }));
 
     // Navigate to home
+    this.toHome();
     // Save to 'DB'
     submitEntry({key, entry});
     // Clear local notification
@@ -81,26 +83,34 @@ class AddEntry extends Component {
       [key]: getDailyReminderValue(),
     }));
     // Route to Home
+    this.toHome();
     // Update "DB"
     removeEntry(key);
+  }
+  toHome = () => {
+    this.props.navigation.dispatch(
+      CommonActions.goBack({
+          key: 'AddEntry',
+      }))  
   }
   render() {
     const metaInfo = getMetricMetaInfo();
 
-    if (this.props.alreadyLogged) {
-      return (
-        <View style={styles.center}>
-          <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
-            size={100}
-          />
-          <Text>You already logged your information for today</Text>
-          <TextButton style={{padding: 10}} onPress={this.reset}>
-            Reset
-          </TextButton>
-        </View>
-      )
-    }
+    // REDUNDANT CODE?????
+    // if (this.props.alreadyLogged) {
+    //   return (
+    //     <View style={styles.center}>
+    //       <Ionicons
+    //         name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
+    //         size={100}
+    //       />
+    //       <Text>You already logged your information for today</Text>
+    //       <TextButton style={{padding: 10}} onPress={this.reset}>
+    //         Reset
+    //       </TextButton>
+    //     </View>
+    //   )
+    // }
 
     return (
       <View style={styles.container}>
