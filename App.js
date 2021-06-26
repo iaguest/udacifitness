@@ -12,6 +12,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants'
 import EntryDetail from './components/EntryDetail';
+import Live from './components/Live'
 
 function UdaciStatusBar({backgroundColor, ...props}) {
   return (
@@ -56,6 +57,15 @@ function Home() {
           options={{
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name='plus-square' color={color} size={size} />
+            ),                
+          }}
+          />
+        <Tab.Screen
+          name="Live"
+          component={Live}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name='ios-speedometer' color={color} size={size} />
             ),                
           }}
           />

@@ -4,8 +4,6 @@ import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils
 import UdaciSlider from './UdaciSlider'
 import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
-import { Ionicons } from '@expo/vector-icons'
-import TextButton from './TextButton'
 import { submitEntry, removeEntry } from '../utils/api'
 import { connect } from 'react-redux'
 import { addEntry } from '../actions'
@@ -96,22 +94,6 @@ class AddEntry extends Component {
   render() {
     const metaInfo = getMetricMetaInfo();
 
-    // REDUNDANT CODE?????
-    // if (this.props.alreadyLogged) {
-    //   return (
-    //     <View style={styles.center}>
-    //       <Ionicons
-    //         name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
-    //         size={100}
-    //       />
-    //       <Text>You already logged your information for today</Text>
-    //       <TextButton style={{padding: 10}} onPress={this.reset}>
-    //         Reset
-    //       </TextButton>
-    //     </View>
-    //   )
-    // }
-
     return (
       <View style={styles.container}>
         <DateHeader date={(new Date().toLocaleDateString())}/>
@@ -184,11 +166,4 @@ const styles = StyleSheet.create({
   }
 });
 
-function mapStateToProps(state) {
-  const key = timeToString();
-  return {
-    alreadyLogged: state[key] && typeof state[key].today === 'undefined',
-  }
-}
-
-export default connect(mapStateToProps)(AddEntry);
+export default connect()(AddEntry);
