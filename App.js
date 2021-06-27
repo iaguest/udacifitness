@@ -13,6 +13,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants'
 import EntryDetail from './components/EntryDetail';
 import Live from './components/Live'
+import { setLocalNotification } from './utils/helpers'
 
 function UdaciStatusBar({backgroundColor, ...props}) {
   return (
@@ -74,6 +75,9 @@ function Home() {
 }
 
 export default class App extends React.Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   render() {
     return (
       <Provider store={createStore(reducer)}>
