@@ -3,7 +3,6 @@ import React from 'react'
 import { View, StyleSheet, AsyncStorage } from 'react-native'
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { white, red, orange, blue, lightPurp, pink } from './colors'
-// import { Notifications, Permissions } from 'expo'
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications'
 
@@ -174,48 +173,37 @@ export function clearLocalNotification() {
     .then(Notifications.cancelAllScheduledNotificationsAsync);
 }
 
-function createNotification() {
-  return {
-    title: 'Log your stats',
-    body: "👋 don't forget to log your stats for today!",
-    ios: {
-      sound: true,
-    },
-    android: {
-      sound: true,
-      priority: 'high',
-      sticky: false,
-      vibrate: true,
-    }
-  }
-}
-
 export function setLocalNotification() {
   AsyncStorage.getItem(NOTIFICATION_KEY)
     .then(JSON.parse)
     .then((data) => {
       if (data === null) {
-        Permissions.askAsync(Permissions.NOTIFICATIONS)
-          .then(({status})=> {
-            if (status === 'granted') {
-              Notifications.cancelAllScheduledNotificationsAsync();
-
-              let tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              tomorrow.setHours(19);
-              tomorrow.setMinutes(5);
-
-              Notifications.scheduleNotificationAsync(
-                createNotification(),
-                {
-                  time: tomorrow,
-                  repeat: 'day',
-                }
-              );
+          Permissions.askAsync(Permissions.NOTIFICATIONS)
+            .then(({status})=> {
+              if (status === 'granted') {
+                Notifications.cancelAllScheduledNotificationsAsync();
+                Notifications.scheduleNotificationAsync({
+                  content: {
+                    title: 'Log your stats',
+                    body: "👋 don't forget to log your stats for today!",
+                    sound: true
+                  },
+                  // Some notes about this:
+                  // 1. Notifications seem a bit quirky in that they ONLY appear
+                  //    if the app is minimised and not at all if its currently open.
+                  //    ... helps to be aware of when testing!
+                  // 2. TODO: Make the alarm start from tomorrow in line with original
+                  //          intent. Need to look into latest api changes.
+                  trigger: {
+                    hour: 20,
+                    minute: 0,
+                    repeats: true,
+                  }
+                });
 
                 AsyncStorage.setItem(NOTIFICATION_KEY, JSON.stringify(true));
-            }
-          });
+              }
+            });
       }
     });
 }
